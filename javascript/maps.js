@@ -14,6 +14,7 @@ var latlng;
 var info = [];
 var currentInfoWindow = null;
 var icons = 'icon/star-3.png';
+var xhrMarker;
 
 $(document).ready(function () {
 
@@ -79,7 +80,7 @@ $(document).ready(function () {
             // Set circling area
             circle = new google.maps.Circle({
                 map: map,
-                radius: slider.getValue() * 1000, // 10 miles in metres
+                radius: slider.getValue() * 621, // 10 miles in metres
                 fillColor: '#AA0000'
             });
             circle.bindTo('center', marker, 'position');
@@ -109,20 +110,20 @@ $(document).ready(function () {
         getMarker(circle.radius,latlng);
     }
 
-    function getMarker(radius, latlng){
-        var xmlhttp=new XMLHttpRequest();
-        xmlhttp.onreadystatechange=function() {
-            if (xmlhttp.readyState==4 && xmlhttp.status==200) {
+    function getMarker(radius, latlng) {
+        xhrMarker = new XMLHttpRequest();
+        xhrMarker.onreadystatechange = function() {
+            if (xhrMarker.readyState == 4 && xhrMarker.status == 200) {
 
                 deletes();
-                var data=JSON.parse(xmlhttp.responseText);
-                for(var i=0;i<data.length;i++){
-                    mapsProspek(data[i].lat,data[i].lng,data[i].description);
+                var data = JSON.parse(xhrMarker.responseText);
+                for (var i = 0; i < data.length; i++){
+                    mapsProspek(data[i].lat, data[i].lng, data[i].description);
                 }
             }
         };
-        xmlhttp.open("GET","class/latlong.php?lat="+latlng+"&rad="+radius,true);
-        xmlhttp.send();
+        xhrMarker.open("GET", "class/latlong.php?lat=" + latlng + "&rad=" + radius, true);
+        xhrMarker.send();
     };
 
     function mapsProspek(lat, long, desc){
