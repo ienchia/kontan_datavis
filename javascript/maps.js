@@ -20,14 +20,14 @@ $(document).ready(function () {
     console.log("document ready!");
     function initialize() {
 
+        // Create map and set bounds
         map = new google.maps.Map(document.getElementById('map-canvas'), {
             mapTypeId: google.maps.MapTypeId.ROADMAP
         });
-
         var defaultBounds = new google.maps.LatLngBounds(
             new google.maps.LatLng(5.880241, 95.336574),
             new google.maps.LatLng(-5.469275, 140.852050));
-            map.fitBounds(defaultBounds);
+        map.fitBounds(defaultBounds);
 
         // Create the search box and link it to the UI element.
         var input = /** @type {HTMLInputElement} */(
@@ -37,27 +37,27 @@ $(document).ready(function () {
         var searchBox = new google.maps.places.SearchBox(
             /** @type {HTMLInputElement} */(input));
 
-            // [START region_getplaces]
-            // Listen for the event fired when the user selects an item from the
-            // pick list. Retrieve the matching places for that item.
-            google.maps.event.addListener(searchBox, 'places_changed', function () {
-                var places = searchBox.getPlaces();
+        // [START region_getplaces]
+        // Listen for the event fired when the user selects an item from the
+        // pick list. Retrieve the matching places for that item.
+        google.maps.event.addListener(searchBox, 'places_changed', function () {
+            var places = searchBox.getPlaces();
 
-                if (places.length == 0) {
-                    return;
-                }
-                for (var i = 0, marker; marker = markers[i]; i++) {
-                    marker.setMap(null);
-                }
+            if (places.length == 0) {
+                return;
+            }
+            for (var i = 0, marker; marker = markers[i]; i++) {
+                marker.setMap(null);
+            }
 
-                // For each place, get the icon, place name, and location.
-                markers = [];
-                var bounds = new google.maps.LatLngBounds();
-                for (var i = 0, place; place = places[i]; i++) {
-                    bounds.extend(place.geometry.location);
-                }
+            // For each place, get the icon, place name, and location.
+            markers = [];
+            var bounds = new google.maps.LatLngBounds();
+            for (var i = 0, place; place = places[i]; i++) {
+                bounds.extend(place.geometry.location);
+            }
 
-                map.fitBounds(bounds);
+            map.fitBounds(bounds);
         });
         // [END region_getplaces]
 
@@ -83,7 +83,7 @@ $(document).ready(function () {
                 fillColor: '#AA0000'
             });
             circle.bindTo('center', marker, 'position');
-            
+
             markers.push(marker);
             circles.push(circle);
             // Set Zoom
